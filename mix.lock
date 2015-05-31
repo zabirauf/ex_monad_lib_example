@@ -1,0 +1,1 @@
+%{"monad": {:git, "https://github.com/zabirauf/monad.git", "e515edf89653e2ce25c9191951715334fc9e37af", [branch: "develop"]}}
