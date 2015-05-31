@@ -2,10 +2,23 @@ defmodule ExampleMaybe do
   require Monad.Maybe, as: Maybe
   import Maybe
 
-  def my_div(_numerator,0), do: Maybe.fail(nil)
-  def my_div(numerator, denominator), do: Maybe.return(numerator/denominator)
+  # The division operator which return something if successfull
+  # otherwise in case of failure returns nothing
+  def my_div(_numerator,0) do
+  	# Returns nothing
+  	Maybe.fail(nil)
+  end
 
-  def my_sum(a,b), do: Maybe.return(a+b)
+  def my_div(numerator, denominator) do
+    # Returns {:something, result}
+    Maybe.return(numerator/denominator)
+  end
+
+  # Sum always returns something
+  def my_sum(a,b) do
+    # Returns {:just, result}
+    Maybe.return(a+b)
+  end
 
   def output(x) do
   	case is_nothing(x) do
@@ -14,16 +27,19 @@ defmodule ExampleMaybe do
     end
   end
 
+  # A successful scenario
   def scenario1() do
+    # The |> opeartor in Maybe.p acts as bind
     val =
     Maybe.p do
         Maybe.return(100)
       |> my_sum(50)
       |> my_div(2)
     end
-    output(val)
+    output(val) # Outputs "75.0"
   end
 
+  # A scenario where division by zero is done
   def scenario2() do
     val =
     Maybe.p do
@@ -31,6 +47,6 @@ defmodule ExampleMaybe do
       |> my_sum(0)
       |> (&my_div(100, &1)).()
     end
-    output(val)
+    output(val) # Outputs "No value gotten"
   end
 end
